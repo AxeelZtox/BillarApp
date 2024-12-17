@@ -22,7 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 
 
 @Composable
@@ -44,12 +45,12 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagen en la parte superior
+            // Mostrar la imagen
             Image(
-                painter = painterResource(id = R.drawable.logo_billar), // Reemplaza con tu nombre de archivo
+                bitmap = imageBitmap,
                 contentDescription = "Logo Billar",
                 modifier = Modifier
-                    .size(120.dp) // Ajusta el tamaño de la imagen
+                    .size(120.dp)
                     .padding(bottom = 16.dp)
             )
             Text(
