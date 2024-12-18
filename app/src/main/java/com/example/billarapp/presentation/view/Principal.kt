@@ -21,7 +21,12 @@ fun MainComposable() {
     val currentScreen = remember { mutableStateOf("login") }
 
     when (currentScreen.value) {
-        "login" -> LoginScreen(onRegisterClick = { currentScreen.value = "register" })
+        "login" -> LoginScreen(onRegisterClick = { currentScreen.value = "register" },
+                onNavigateToBienvenida = { currentScreen.value = "bienvenida" })
         "register" -> RegisterScreen(onNavigateToLogin = { currentScreen.value = "login" })
+        "bienvenida" -> BienvenidaScreen(
+            onUnirseClick = { /* Acción para unirse */ },
+            onRegistrarClick = { /* Acción para registrar */ }
+        )
     }
 }

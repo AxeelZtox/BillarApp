@@ -32,10 +32,12 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import android.graphics.BitmapFactory
 import java.io.InputStream
+import android.widget.Toast
+import com.example.billarapp.data.network.verificarCredenciales
 
 
 @Composable
-fun LoginScreen(onRegisterClick: () -> Unit) {
+fun LoginScreen(onRegisterClick: () -> Unit, onNavigateToBienvenida: () -> Unit) {
     // Estados para almacenar el usuario y contraseña
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -197,7 +199,13 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
 
             // Botón de Login
             Button(
-                onClick = { /* Acción de login */ },
+                onClick = {
+                    val esValido = verificarCredenciales(username.value, password.value)
+                    if (esValido) {
+                        onNavigateToBienvenida() // Navega a la pantalla de bienvenida
+                    } else {
+                        Toast.makeText(context, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show()
+                    } },
                 modifier = Modifier.height(40.dp).width(250.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xff99df5b), // Fondo del botón

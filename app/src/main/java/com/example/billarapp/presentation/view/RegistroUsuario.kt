@@ -208,16 +208,16 @@ fun RegisterScreen(onNavigateToLogin: () -> Unit) {
                     errors.value = validationErrors
                     if (validationErrors.isEmpty()) {
                         val registroExitoso = registrarUsuario(
-                            fullName.value,
-                            username.value,
-                            email.value,
-                            phone.value,
-                            password.value
+                            nombreCompleto = fullName.value,
+                            nombreUsuario = username.value,
+                            correo = email.value,
+                            telefono = phone.value,
+                            contraseña = password.value
                         )
                         if (registroExitoso) {
-                            showMessage.value = true
+                            showMessage.value = true // Muestra mensaje de éxito
                         } else {
-                            showError.value = true
+                            showError.value = true // Muestra mensaje de error
                         }
                     }
                 },

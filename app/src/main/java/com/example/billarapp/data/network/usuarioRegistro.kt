@@ -1,26 +1,26 @@
 package com.example.billarapp.data.network
 
-
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.runBlocking
 
-fun registrarUsuario(fullName: String, username: String, email: String, phone: String, password: String): Boolean {
-    val client = supabaseBillar()
+fun registrarUsuario(nombreCompleto: String, nombreUsuario: String, correo: String, telefono: String, contraseña: String): Boolean {
+    val client = supabaseBillar() // Verifica que esta función esté configurada correctamente
     return runBlocking {
         try {
-            client.postgrest["usuarios"].insert(
+            // Inserta los datos en la tabla "usuarios"
+            client.postgrest["datos_usuario"].insert(
                 mapOf(
-                    "full_name" to fullName,
-                    "username" to username,
-                    "email" to email,
-                    "phone" to phone,
-                    "password" to password
+                    "nombre_completo" to nombreCompleto,
+                    "nombre_usuario" to nombreUsuario,
+                    "correo" to correo,
+                    "telefono" to telefono,
+                    "contraseña" to contraseña
                 )
             )
-            true // Si no hay excepciones, la operación fue exitosa
+            true // Operación exitosa
         } catch (e: Exception) {
             e.printStackTrace()
-            false // Si ocurre una excepción, la operación falló
+            false // Fallo en la operación
         }
     }
 }
