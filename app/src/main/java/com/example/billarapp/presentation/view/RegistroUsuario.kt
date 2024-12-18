@@ -20,6 +20,9 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import com.example.billarapp.data.network.registrarUsuario
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 
 @Composable
 fun RegisterScreen(onNavigateToLogin: () -> Unit) {
@@ -239,50 +242,82 @@ fun LabeledTextFieldWithError(
     error: String? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
+    // Estado para mostrar/ocultar contraseña
+    val isPasswordVisible = remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .background(Color(0xFF1E1E2C), MaterialTheme.shapes.small)
+                .padding(8.dp)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = Color(0xFF7FD238)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            BasicTextField(
-                value = value,
-                onValueChange = onValueChange,
-                modifier = Modifier
-                    .weight(1f)
-                    .background(Color(0xFF1E1E2C), shape = MaterialTheme.shapes.small)
-                    .padding(8.dp),
-                visualTransformation = visualTransformation,
-                decorationBox = { innerTextField ->
-                    Box(Modifier.fillMaxWidth()) {
-                        if (value.isEmpty()) {
-                            Text(
-                                placeholder,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color.Gray
-                            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Ícono de la izquierda (candado, usuario, etc.)
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp),
+                    tint = Color(0xFF7FD238)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // Campo de texto principal
+                BasicTextField(
+                    value = value,
+                    onValueChange = { onValueChange(it) },
+                    modifier = Modifier
+                        .weight(1f), // El campo ocupa el espacio restante
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
+                    visualTransformation = if (visualTransformation == PasswordVisualTransformation() && !isPasswordVisible.value) {
+                        PasswordVisualTransformation()
+                    } else {
+                        VisualTransformation.None
+                    },
+                    decorationBox = { innerTextField ->
+                        Box(Modifier.fillMaxWidth()) {
+                            if (value.isEmpty()) {
+                                Text(
+                                    placeholder,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.Gray
+                                )
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
                     }
-                },
-                textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
-            )
+                )
+
+                // Ícono para mostrar/ocultar contraseña (solo si es campo de contraseña)
+                if (visualTransformation == PasswordVisualTransformation()) {
+                    Icon(
+                        imageVector = if (isPasswordVisible.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = if (isPasswordVisible.value) "Ocultar contraseña" else "Mostrar contraseña",
+                        modifier = Modifier
+                            .size(24.dp) // Tamaño del ícono consistente
+                            .clickable { isPasswordVisible.value = !isPasswordVisible.value }
+                            .padding(start = 8.dp),
+                        tint = Color(0xFF7FD238)
+                    )
+                }
+            }
         }
+
+        // Mensaje de error debajo del campo
         if (!error.isNullOrEmpty()) {
             Text(
                 text = error,
                 color = Color.Red,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
             )
         }
     }
 }
+
+

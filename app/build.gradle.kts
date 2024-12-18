@@ -83,6 +83,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     // Para kotlinx.serialization
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
 
 
 }

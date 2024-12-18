@@ -22,8 +22,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.Image
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import java.io.InputStream
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 
 
 @Composable
@@ -31,7 +39,14 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
     // Estados para almacenar el usuario y contraseña
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+    val isPasswordVisible = remember { mutableStateOf(false) }
     val context = LocalContext.current // Obtener el contexto
+
+    // Cargar imagen desde assets
+    val imageBitmap: ImageBitmap? = remember {
+        val inputStream: InputStream = context.assets.open("logo_billar.png")
+        BitmapFactory.decodeStream(inputStream)?.asImageBitmap()
+    }
 
     // Diseño de la pantalla
     Box(
@@ -45,20 +60,23 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Mostrar la imagen
-            Image(
-                bitmap = imageBitmap,
-                contentDescription = "Logo Billar",
-                modifier = Modifier
-                    .size(120.dp)
-                    .padding(bottom = 16.dp)
-            )
-            Text(
+            // Mostrar la imagen en forma de círculo
+            imageBitmap?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = "Logo Billar",
+                    modifier = Modifier
+                        .size(200.dp) // Ajusta el tamaño de la imagen
+                        .clip(CircleShape) // Aplica la forma circular
+                        .padding(bottom = 1.dp)
+                )
+            }
+            /*Text(
                 text = "Inicio de Sesion",
                 style = MaterialTheme.typography.titleLarge,
                 color = Color(0xff7FD238),
                 modifier = Modifier.padding(bottom = 32.dp)
-            )
+            )*/
 
             // Campo de texto para el usuario
             Row(
@@ -80,7 +98,7 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color(0xFF1E1E2C), shape = MaterialTheme.shapes.small) // Fondo del campo
-                        .padding(8.dp),
+                        .padding(10.dp),
                     decorationBox = { innerTextField ->
                         Box(Modifier.fillMaxWidth()) {
                             if (username.value.isEmpty()) {
@@ -106,36 +124,62 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
                     .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Icono del candado a la izquierda (fuera del campo)
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = "Icono de candado",
-                    modifier = Modifier.size(24.dp),
-                    tint = Color(0xFF7FD238) // Color del ícono
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                BasicTextField(
-                    value = password.value,
-                    onValueChange = { password.value = it },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF1E1E2C), shape = MaterialTheme.shapes.small) // Fondo del campo
-                        .padding(8.dp),
-                    visualTransformation = PasswordVisualTransformation(),
-                    decorationBox = { innerTextField ->
-                        Box(Modifier.fillMaxWidth()) {
-                            if (password.value.isEmpty()) {
-                                Text(
-                                    "Contraseña",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray // Color del texto de marcador
-                                )
-                            }
-                            innerTextField()
-                        }
-                    },
-                    textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.White) // Color del texto ingresado
+                        .size(24.dp),
+                    tint = Color(0xFF7FD238)
                 )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // Campo de texto con el ícono de visibilidad dentro
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .background(Color(0xFF1E1E2C), shape = MaterialTheme.shapes.small)
+                        .padding(8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Campo de texto para la contraseña
+                        BasicTextField(
+                            value = password.value,
+                            onValueChange = { password.value = it },
+                            modifier = Modifier.weight(1f),
+                            visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+                            decorationBox = { innerTextField ->
+                                Box(Modifier.fillMaxWidth()) {
+                                    if (password.value.isEmpty()) {
+                                        Text(
+                                            "Contraseña",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                    innerTextField()
+                                }
+                            },
+                            textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                        )
+
+                        // Icono para mostrar/ocultar contraseña
+                        Icon(
+                            imageVector = if (isPasswordVisible.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = if (isPasswordVisible.value) "Ocultar contraseña" else "Mostrar contraseña",
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable { isPasswordVisible.value = !isPasswordVisible.value },
+                            tint = Color(0xFF7FD238)
+                        )
+                    }
+                }
             }
+
 
             // Botón interactuable "Olvidaste contraseña"
             TextButton(
