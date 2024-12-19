@@ -25,8 +25,13 @@ fun MainComposable() {
                 onNavigateToBienvenida = { currentScreen.value = "bienvenida" })
         "register" -> RegisterScreen(onNavigateToLogin = { currentScreen.value = "login" })
         "bienvenida" -> BienvenidaScreen(
-            onUnirseClick = { /* Acción para unirse */ },
-            onRegistrarClick = { /* Acción para registrar */ }
+            onUnirseClick = { /* Navegar a Unirse a un Billar */ },
+            onRegistrarClick = { currentScreen.value = "registro_billar" }
         )
+        "registro_billar" -> RegistroBillarScreen(
+            onNavigateToBienvenida = { currentScreen.value = "bienvenida" },
+            onNavigateToAdmin = { currentScreen.value = "admin" }
+        )
+        "admin" -> AdminScreen()
     }
 }

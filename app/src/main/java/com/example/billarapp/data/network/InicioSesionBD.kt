@@ -2,12 +2,14 @@ package com.example.billarapp.data.network
 
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.runBlocking
+import android.content.Context
+import android.widget.Toast
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-fun verificarCredenciales(username: String, password: String): Boolean {
+fun verificarCredenciales(context: Context, username: String, password: String): Boolean {
     return runBlocking {
         try {
             val response = supabaseBillar()
@@ -28,6 +30,8 @@ fun verificarCredenciales(username: String, password: String): Boolean {
             println("Usuario válido: $usuarioValido")
             usuarioValido
         } catch (e: Exception) {
+            // Muestra un Toast con el mensaje de error
+            Toast.makeText(context, "Error al Iniciar Sesión", Toast.LENGTH_LONG).show()
             println("Error al verificar usuario: ${e.message}")
             e.printStackTrace()
             false

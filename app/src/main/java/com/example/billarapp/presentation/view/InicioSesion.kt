@@ -200,7 +200,7 @@ fun LoginScreen(onRegisterClick: () -> Unit, onNavigateToBienvenida: () -> Unit)
             // Botón de Login
             Button(
                 onClick = {
-                    val esValido = verificarCredenciales(username.value, password.value)
+                    val esValido = verificarCredenciales(context, username.value, password.value)
                     if (esValido) {
                         onNavigateToBienvenida() // Navega a la pantalla de bienvenida
                     } else {
