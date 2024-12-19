@@ -32,6 +32,11 @@ fun MainComposable() {
             onNavigateToBienvenida = { currentScreen.value = "bienvenida" },
             onNavigateToAdmin = { currentScreen.value = "admin" }
         )
-        "admin" -> AdminScreen()
+        "admin" -> AdminScreen(mesas = listOf("Mesa 1", "Mesa 2", "Mesa 3", "Mesa N"), // Lista de mesas
+            onMesaClick = { mesaSeleccionada ->
+                println("Mesa seleccionada: $mesaSeleccionada")
+                // Agregar lógica para navegar o interactuar
+            }
+        )
     }
 }
