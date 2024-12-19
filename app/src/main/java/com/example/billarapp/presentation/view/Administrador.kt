@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ProductionQuantityLimits
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -68,6 +69,15 @@ fun AdminScreen(
                         text = "Cuentas",
                         icon = Icons.Default.Home,
                         onClick = onCuentasClick
+                    )
+                    BottomNavigationButton(
+                        text = "Cuentas",
+                        icon = Icons.Default.ProductionQuantityLimits,
+                        onClick = {
+                            val intent = Intent(context, Productos::class.java).apply {
+                            }
+                            context.startActivity(intent)
+                        }
                     )
                 }
             }

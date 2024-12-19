@@ -122,7 +122,7 @@ fun CrearCuentaScreen(id_billar:Int,numero_mesa:Int, onBackClick: () -> Unit){
                     try {
                         CoroutineScope(Dispatchers.IO).launch {
                             if(InsertCuenta(id_billar,cliente,numero_mesa)){
-                                val intent = Intent(context, Productos::class.java)/*.apply {
+                                val intent = Intent(context, DetalleMesa::class.java)/*.apply {
                                 putExtra("id_billar",id_billar)
                                 putExtra("numero_mesa",numero_mesa)
                             }*/
