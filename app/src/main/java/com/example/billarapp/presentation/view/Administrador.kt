@@ -1,122 +1,119 @@
 package com.example.billarapp.presentation.view
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminScreen(mesas: List<String>, onMesaClick: (String) -> Unit, onPoolClick: () -> Unit, onCarambolaClick: () -> Unit) {
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.screenWidthDp > configuration.screenHeightDp
+fun AdminScreen(
+    context: Context, // Pasamos el contexto para usar Intents
+    onPoolClick: () -> Unit,
+    onCarambolaClick: () -> Unit,
+    onMesaClick: (Int) -> Unit,
+    onCuentasClick: () -> Unit,
+    onProveedoresClick: () -> Unit
+) {
+    val mesas = listOf("Mesa 1", "Mesa 2", "Mesa 3", "Mesa N")
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF0B0E1D)) // Fondo oscuro
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Mesas",
-                style = MaterialTheme.typography.titleLarge,
-                color = Color(0xFF7FD238), // Verde
-                modifier = Modifier.padding(bottom = 16.dp),
-                fontSize = if (isLandscape) 20.sp else 24.sp
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Mesas") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFF1A1D2B),
+                    titleContentColor = Color.White
+                )
             )
-
-            LazyColumn(
-                modifier = Modifier.weight(1f), // Ocupa el espacio disponible
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = Color(0xFF1A1D2B),
+                contentColor = Color.White
             ) {
-                items(mesas) { mesa ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    BottomNavigationButton(
+                        text = "Proveedores",
+                        icon = Icons.Default.Group,
+                        onClick = onProveedoresClick
+                    )
+                    BottomNavigationButton(
+                        text = "POOL",
+                        icon = Icons.Default.AddCircle,
+                        onClick = onPoolClick
+                    )
+                    BottomNavigationButton(
+                        text = "CARAMBOLA",
+                        icon = Icons.Default.AddCircle,
+                        onClick = onCarambolaClick
+                    )
+                    BottomNavigationButton(
+                        text = "Cuentas",
+                        icon = Icons.Default.Home,
+                        onClick = onCuentasClick
+                    )
+                }
+            }
+        },
+        content = { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFF0B0E1D))
+                    .padding(innerPadding)
+            ) {
+                mesas.forEachIndexed { index, mesa ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                            .height(if (isLandscape) 50.dp else 60.dp),
+                            .padding(8.dp)
+                            .clickable {
+                                onMesaClick(index + 1) // Usa el callback para manejar el clic en cada mesa
+                            },
                         colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF1E1E2C) // Color de la tarjeta
-                        ),
-                        onClick = { onMesaClick(mesa) }
+                            containerColor = Color(0xFF1A1D2B)
+                        )
                     ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Text(
-                                text = mesa,
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
+                        Text(
+                            text = mesa,
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
                 }
             }
         }
+    )
+}
 
-        // Menú inferior con estilo personalizado
-        BottomAppBar(
-            containerColor = Color(0xFF1E1E2C),
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-            tonalElevation = 8.dp
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = if (isLandscape) 32.dp else 16.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Button(
-                    onClick = onPoolClick,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    elevation = null
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.AddCircle,
-                            contentDescription = "POOL",
-                            tint = Color(0xFF7FD238),
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text("POOL", color = Color(0xFF7FD238), fontSize = if (isLandscape) 14.sp else 16.sp)
-                    }
-                }
-
-                Button(
-                    onClick = onCarambolaClick,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    elevation = null
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.AddCircle,
-                            contentDescription = "CARAMBOLA",
-                            tint = Color(0xFF7FD238),
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text("CARAMBOLA", color = Color(0xFF7FD238), fontSize = if (isLandscape) 14.sp else 16.sp)
-                    }
-                }
-            }
-        }
+@Composable
+fun BottomNavigationButton(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clickable { onClick() }
+            .padding(8.dp)
+    ) {
+        Icon(icon, contentDescription = text, tint = Color.White, modifier = Modifier.size(24.dp))
+        Text(text, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
     }
 }

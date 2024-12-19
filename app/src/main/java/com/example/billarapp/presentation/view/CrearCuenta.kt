@@ -95,12 +95,16 @@ class CrearCuenta : AppCompatActivity() {
 
 @Composable
 private fun ShowContent(id_billar:Int,numero_mesa:Int){
-    CrearCuentaScreen(id_billar,numero_mesa)
+    CrearCuentaScreen(id_billar,numero_mesa,
+        onBackClick = {
+            val activity = (LocalContext as? Activity)
+            activity?.finish()
+        })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CrearCuentaScreen(id_billar:Int,numero_mesa:Int){
+fun CrearCuentaScreen(id_billar:Int,numero_mesa:Int, onBackClick: () -> Unit){
     /*Variables y funciones*/
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -165,14 +169,10 @@ private fun CrearCuentaScreen(id_billar:Int,numero_mesa:Int){
 
 
                 navigationIcon = {
-                    /*CORREGIR CLASE LLAMADA EN LA IMPLEMENTACION DE LAS DEMAS PANTALLAS*/
-                    val activity = (LocalContext.current as? Activity)
-                    IconButton(onClick = {
-                        activity?.finish()
-                    }) {
+                    IconButton(onClick = { onBackClick() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Regresar"
                         )
                     }
                 },

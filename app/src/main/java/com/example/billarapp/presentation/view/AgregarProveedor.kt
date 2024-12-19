@@ -1,5 +1,6 @@
 package com.example.billarapp.presentation.view
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -45,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -65,7 +67,10 @@ class AgregarProveedor : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color(0xFF0B0E1D)
                 ) {
-                    PantallaAgregarProveedor()
+                    PantallaAgregarProveedor(onBackClick = {
+                        val activity = (LocalContext as? Activity)
+                        activity?.finish()
+                    })
                 }
             }
         }
@@ -73,7 +78,7 @@ class AgregarProveedor : ComponentActivity() {
 }
 
 @Composable
-fun PantallaAgregarProveedor() {
+fun PantallaAgregarProveedor(onBackClick: () -> Unit) {
     var nombreProveedor by remember { mutableStateOf("") }
     var numeroTelefono by remember { mutableStateOf("") }
     var mensajeError by remember { mutableStateOf("") }
@@ -252,6 +257,19 @@ fun PantallaAgregarProveedor() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Botón de regreso en la parte superior
+            Button(
+                onClick = { onBackClick() },
+                modifier = Modifier.align(Alignment.Start),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xff99df5b)
+                )
+            ) {
+                Text("Regresar", color = Color(0xFF0B0E1D), fontWeight = FontWeight.Bold)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Título
             Card(
                 modifier = Modifier

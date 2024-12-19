@@ -34,6 +34,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import android.Manifest
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
 import com.example.billarapp.ui.theme.*
 
 
@@ -48,7 +50,11 @@ class DetalleCuenta : ComponentActivity() {
         val tiempo = intent.getStringExtra("tiempo") ?: ""
 
         setContent {
-            DetalleCuentaScreen(this, mesa, cuenta, cliente, tiempo)
+            DetalleCuentaScreen(this, mesa, cuenta, cliente, tiempo,
+                onBackClick = {
+                    val activity = (LocalContext as? Activity)
+                    activity?.finish()
+                })
         }
     }
 }
@@ -59,7 +65,8 @@ fun DetalleCuentaScreen(
     mesa: String,
     cuenta: String,
     cliente: String,
-    tiempo: String
+    tiempo: String,
+    onBackClick: () -> Unit
 ) {
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -117,13 +124,11 @@ fun DetalleCuentaScreen(
                     tint = TextoBlanco,
                     modifier = Modifier
                         .size(24.dp)
-                        .clickable {
-                            //Volver a Cuentas
-                            val intent = Intent(context, Cuentas::class.java)
-                            context.startActivity(intent)
-                        }
+                        .clickable {onBackClick()}
                 )
+
                 Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
                     text = "Regresar",
                     color = TextoBlanco,
