@@ -10,8 +10,6 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.Context
-import android.content.SharedPreferences
 
 suspend fun registrarBillar(nombre: String, codigo: String, detalles: String): Boolean {
     return withContext(Dispatchers.IO) {
@@ -57,7 +55,7 @@ suspend fun registrarBillar(nombre: String, codigo: String, detalles: String): B
     }
 }
 
-suspend fun registrarBillarUsuario(codigo: String, rol: String, userId: Int): Boolean {
+suspend fun registrarBillarUsuario(codigo: String, rol: String): Boolean {
     return withContext(Dispatchers.IO) {
         try {
             val clienteSupabase = supabaseBillar()
@@ -82,7 +80,6 @@ suspend fun registrarBillarUsuario(codigo: String, rol: String, userId: Int): Bo
             // Inserta el registro en la tabla billar_usuario
             val fechaAsociacion = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
             val registroUsuario = mapOf(
-                "id_user" to userId,
                 "id_billar" to idBillar,
                 "fecha_asociacion" to fechaAsociacion,
                 "rol" to rol
@@ -97,23 +94,6 @@ suspend fun registrarBillarUsuario(codigo: String, rol: String, userId: Int): Bo
         } catch (e: Exception) {
             Log.e("RegistroBillarUsuario", "Error al asociar usuario al billar: ${e.message}", e)
             false
-        }
-    }
-}
-
-// Función para obtener el ID del usuario actual desde SharedPreferences
-suspend fun obtenerIdUsuarioActual(context: Context): Int? {
-    return withContext(Dispatchers.IO) {
-        try {
-            val sharedPreferences: SharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
-            val userId = sharedPreferences.getInt("userId", -1)
-            if (userId == -1) {
-                null // Devuelve null si no se encontró el ID del usuario
-            } else {
-                userId // Devuelve el ID del usuario
-            }
-        } catch (e: Exception) {
-            null // En caso de error, retorna null
         }
     }
 }

@@ -149,20 +149,13 @@ fun RegistroBillarScreen(onNavigateToBienvenida: () -> Unit, onNavigateToAdmin: 
                                 val registroExitoso = registrarBillar(nombreBillar.value.text, codigo, detalles)
 
                                 if (registroExitoso) {
-                                    val userId = obtenerIdUsuarioActual(context)
-                                    if (userId != null) {
-                                        val usuarioAsociado = registrarBillarUsuario(codigo, "Administrador", userId)
-                                        if (usuarioAsociado) {
-                                            mensajeDialogo.value = "Billar registrado correctamente"
-                                        } else {
-                                            mensajeDialogo.value = "Error al asociar el usuario al billar"
-                                        }
-                                    } else {
-                                        mensajeDialogo.value = "Error: Usuario no autenticado"
-                                    }
+                                    mensajeDialogo.value = "Billar registrado correctamente"
+                                    mostrarDialogo.value = true
                                 } else {
                                     mensajeDialogo.value = "Error al registrar el billar en la base de datos"
+                                    mostrarDialogo.value = true
                                 }
+
                             } catch (e: Exception) {
                                 mensajeDialogo.value = "Error inesperado: ${e.message}"
                             } finally {
