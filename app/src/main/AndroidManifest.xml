@@ -28,6 +28,9 @@
         <activity
             android:name=".presentation.view.Cuentas"
             android:exported="true"/>
+        <activity
+            android:name=".presentation.view.DetalleMesa"
+            android:exported="true"/>
 
         <activity
             android:name=".presentation.view.AddProductoToCuenta"

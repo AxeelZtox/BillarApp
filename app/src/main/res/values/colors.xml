@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Colores principales de la aplicación -->
-    <color name="colorPrimary">#FFCD6D</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorOnPrimary">#0B0E1D</color>
     <color name="colorPrimaryVariant">#4A4D5D</color>
     <color name="colorSecondary">#B2B6C1</color>
@@ -9,11 +9,11 @@
     <color name="black">#000000</color>
 
     <!-- Colores de texto -->
-    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextPrimary">#00000000</color>
     <color name="colorTextSecondary">#B2B6C1</color>
 
     <!-- Colores de fondo -->
     <color name="primaryDark">#0B0E1D</color>
     <color name="primaryLight">#4A4D5D</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#00000000</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.billarapp.presentation.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -82,6 +83,8 @@ private fun ProductosScreen() {
     var cargando by remember { mutableStateOf(true) }
     val coroutineScope = rememberCoroutineScope()
     var mensajeError by remember { mutableStateOf("") }
+    val activity = (LocalContext.current as? Activity)
+
 
     fun cargarProductos() {
         coroutineScope.launch {
@@ -122,8 +125,7 @@ private fun ProductosScreen() {
                 navigationIcon = {
                     /*CORREGIR CLASE LLAMADA EN LA IMPLEMENTACION DE LAS DEMAS PANTALLAS*/
                     IconButton(onClick = {
-                        val intent = Intent(context, Productos::class.java)
-                        context.startActivity(intent)
+                        activity?.finish()
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

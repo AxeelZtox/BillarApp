@@ -71,9 +71,9 @@ class DetalleMesa : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val idCuenta = intent.getIntExtra("id_cuenta", 0)
+        /*val idCuenta = intent.getIntExtra("id_cuenta", 0)
         val numeroMesa = intent.getIntExtra("numero_mesa", 0)
-        val tipoMesa = intent.getStringExtra("tipo_mesa") ?: ""
+        val tipoMesa = intent.getStringExtra("tipo_mesa") ?: ""*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(
@@ -92,7 +92,7 @@ class DetalleMesa : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color(0xFF0B0E1D)
                 ) {
-                    DetalleMesaScreen(idCuenta, numeroMesa, tipoMesa)
+                    DetalleMesaScreen(2, 2, "POOL")
                 }
             }
         }
@@ -121,8 +121,8 @@ fun DetalleMesaScreen(idCuenta: Int, numeroMesa: Int, tipoMesa: String) {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color(0xFF1A1D2B),
-                    titleContentColor = Color(0xFFFFFFFF),
-                    navigationIconContentColor = Color(0xFFFFFFFF)
+                    titleContentColor = Color(0xFF1a1d2b),
+                    navigationIconContentColor = Color(0xFF1a1d2b)
                 ),
                 title = {
                     Text(
@@ -506,7 +506,7 @@ fun BotonesAccion(
 }
 
 fun navigateToAddProducto(context: Context, idCuenta: Int, numeroMesa: Int) {
-    val intent = Intent(context, DetalleMesa::class.java).apply {
+    val intent = Intent(context, AddProductoToCuenta::class.java).apply {
         putExtra("id_cuenta", idCuenta)
         putExtra("numero_mesa", numeroMesa)
     }
