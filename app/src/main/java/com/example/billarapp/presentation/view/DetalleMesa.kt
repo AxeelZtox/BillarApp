@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import com.example.billarapp.domain.actualizarFechaCierreCuenta
 import com.example.billarapp.ui.theme.SystemBarsColorChanger
+import io.ktor.util.valuesOf
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -70,10 +71,6 @@ import java.util.Locale
 class DetalleMesa : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val idCuenta = intent.getIntExtra("id_cuenta", 0)
-        val numeroMesa = intent.getIntExtra("numero_mesa", 0)
-        val tipoMesa = intent.getStringExtra("tipo_mesa") ?: ""
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(
@@ -92,7 +89,7 @@ class DetalleMesa : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color(0xFF0B0E1D)
                 ) {
-                    DetalleMesaScreen(idCuenta, numeroMesa, tipoMesa)
+                    DetalleMesaScreen(idCuenta = 1, numeroMesa = 1, tipoMesa = "POOL")
                 }
             }
         }
@@ -133,7 +130,8 @@ fun DetalleMesaScreen(idCuenta: Int, numeroMesa: Int, tipoMesa: String) {
                 },
                 navigationIcon = {
                     val activity = (LocalContext.current as? Activity)
-                    IconButton(onClick = { activity?.finish() }) {
+                    IconButton(onClick = { val intent = Intent(context,  { }::class.java)
+                        context.startActivity(intent)}) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Regresar"
@@ -413,8 +411,6 @@ fun BotonesAccion(
     ) {
         Button(
             onClick = {
-                val intent = Intent(context, DetalleMesa::class.java)
-                context.startActivity(intent)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF1A1D2B)

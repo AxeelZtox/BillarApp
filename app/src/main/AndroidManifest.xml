@@ -17,6 +17,9 @@
         android:theme="@style/Theme.BillarApp"
         tools:targetApi="31">
 
+        <activity android:name=".presentation.view.DetalleMesa" />
+        <activity android:name=".presentation.view.Administrador" />
+
         <activity
             android:name=".presentation.view.AddMesas"
             android:exported="true" />
